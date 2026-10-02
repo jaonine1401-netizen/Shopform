@@ -61,20 +61,56 @@
 function submitOrder(event) {
     event.preventDefault();
     
+    let submitBtn = document.getElementById('submitBtn');
+    submitBtn.innerText = "กำลังส่งข้อมูล...";
+    submitBtn.disabled = true;
+
     let orderId = 'ORD' + Math.floor(1000 + Math.random() * 9000);
     let name = document.getElementById('name').value;
     let phone = document.getElementById('phone').value;
     let address = document.getElementById('address').value;
     let product = document.getElementById('product').value;
+    let fileInput = document.getElementById('slip');
 
-    document.getElementById('sum-id').innerText = orderId;
-    document.getElementById('sum-name').innerText = name;
-    document.getElementById('sum-phone').innerText = phone;
-    document.getElementById('sum-address').innerText = address;
-    document.getElementById('sum-product').innerText = product;
+    let file = fileInput.files[0];
+    let reader = new FileReader();
 
-    document.getElementById('orderForm').style.display = 'none';
-    document.getElementById('summary').style.display = 'block';
+    reader.onload = function(e) {
+        let base64Data = e.target.result.split(',')[1];
+        
+        let payload = {
+            orderId: orderId,
+            name: name,
+            phone: phone,
+            address: address,
+            product: product,
+            slipName: file.name,
+            slipType: file.type,
+            slipData: base64Data
+        };
+
+        // ⚠️ นำ Web App URL ของ Google Apps Script มาวางแทนที่ข้อความข้างล่างนี้
+        fetch("https://script.google.com/macros/s/AKfycbzKdyr-tGnNZ-5NXkKSERueqSdCiydwCe-GUDobJpFbovh62zTorhxq6P5koVGmvgTj/exec", {
+            method: "POST",
+            mode: "no-cors",
+            body: JSON.stringify(payload)
+        }).then(() => {
+            document.getElementById('sum-id').innerText = orderId;
+            document.getElementById('sum-name').innerText = name;
+            document.getElementById('sum-phone').innerText = phone;
+            document.getElementById('sum-address').innerText = address;
+            document.getElementById('sum-product').innerText = product;
+
+            document.getElementById('orderForm').style.display = 'none';
+            document.getElementById('summary').style.display = 'block';
+        }).catch(error => {
+            alert('เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง');
+            submitBtn.innerText = "ยืนยันการสั่งซื้อ";
+            submitBtn.disabled = false;
+        });
+    };
+
+    reader.readAsDataURL(file);
 }
 </script>
 
