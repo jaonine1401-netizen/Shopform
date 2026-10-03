@@ -25,7 +25,7 @@
     <form id="orderForm" onsubmit="submitOrder(event)">
         <div class="form-group">
             <label>1. รายการสินค้า (พิมพ์ชื่อสินค้าและรายละเอียด)</label>
-            <input type="text" id="product" placeholder="เช่น สายชาร์จ Usb C-L 1ชิ้น" required>
+            <input type="text" id="product" placeholder="เช่น เสื้อยืดสีดำ ไซส์ L จำนวน 2 ตัว" required>
         </div>
         <div class="form-group">
             <label>จำนวนยอดเงินที่โอน (บาท)</label>
@@ -62,11 +62,6 @@
         <button type="submit" id="submitBtn">ยืนยันการสั่งซื้อ</button>
     </form>
 
-    <!-- ปุ่มลิงก์ตรวจสอบสถานะพัสดุ ย้ายมาไว้ด้านล่างสุดของฟอร์ม -->
-    <a href="https://script.google.com/macros/s/AKfycbwe6cU-d4KC0n9Um3Gh834WXJc6pT15HUJCljmNyYuxA3crgUmBt6toyjZWRdLtFqVj-g/exec" target="_blank" class="tracking-btn">
-        📦 คลิกที่นี่เพื่อตรวจสอบสถานะพัสดุ
-    </a>
-
     <div id="summary">
         <h3>สั่งซื้อสำเร็จ! สรุปรายการของคุณ</h3>
         <p><strong>รหัสคำสั่งซื้อ:</strong> <span id="sum-id"></span></p>
@@ -79,7 +74,8 @@
         <p><strong>หมายเหตุ:</strong> <span id="sum-note"></span></p>
         <p style="color: #28a745;">สถานะ: บันทึกคำสั่งซื้อเรียบร้อย</p>
         
-        <a href="https://script.google.com/macros/s/AKfycbwe6cU-d4KC0n9Um3Gh834WXJc6pT15HUJCljmNyYuxA3crgUmBt6toyjZWRdLtFqVj-g/exec" target="_blank" class="tracking-btn" style="background: #17a2b8; margin-top: 15px;">
+        <!-- ปุ่มเช็คพัสดุจะแสดงเฉพาะตอนสั่งซื้อสำเร็จแล้วเท่านั้น -->
+        <a href="https://script.google.com/macros/s/AKfycbwe6cU-d4KC0n9Um3Gh834WXJc6pT15HUJCljmNyYuxA3crgUmBt6toyjZWRdLtFqVj-g/exec" target="_blank" class="tracking-btn" style="background: #17a2b8;">
             🔍 เช็คเลขพัสดุของคุณที่นี่
         </a>
     </div>
