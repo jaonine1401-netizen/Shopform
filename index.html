@@ -12,7 +12,7 @@
         input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
         button { background: #28a745; color: white; padding: 12px; border: none; width: 100%; border-radius: 4px; font-size: 16px; cursor: pointer; margin-bottom: 10px; }
         button:hover { background: #218838; }
-        .tracking-btn { display: block; background: #007bff; color: white; text-align: center; padding: 12px; border-radius: 4px; text-decoration: none; font-size: 16px; margin-bottom: 10px; }
+        .tracking-btn { display: block; background: #007bff; color: white; text-align: center; padding: 12px; border-radius: 4px; text-decoration: none; font-size: 16px; margin-top: 15px; }
         .tracking-btn:hover { background: #0056b3; }
         #summary { display: none; background: #e9ecef; padding: 20px; border-radius: 4px; margin-top: 20px; }
     </style>
@@ -21,13 +21,7 @@
 
 <div class="container">
     <h2>แบบฟอร์มสั่งซื้อสินค้า</h2>
-
-    <!-- ปุ่มลิงก์สำหรับให้ลูกค้ากดเช็คพัสดุได้ตลอดเวลาจากหน้าบ้าน -->
-    <a href="https://script.google.com/macros/s/AKfycbwe6cU-d4KC0n9Um3Gh834WXJc6pT15HUJCljmNyYuxA3crgUmBt6toyjZWRdLtFqVj-g/exec" target="_blank" class="tracking-btn">
-        📦 คลิกที่นี่เพื่อตรวจสอบสถานะพัสดุ
-    </a>
-    <hr style="border: 0; border-top: 1px solid #ddd; margin: 20px 0;">
-
+    
     <form id="orderForm" onsubmit="submitOrder(event)">
         <div class="form-group">
             <label>1. รายการสินค้า (พิมพ์ชื่อสินค้าและรายละเอียด)</label>
@@ -68,6 +62,11 @@
         <button type="submit" id="submitBtn">ยืนยันการสั่งซื้อ</button>
     </form>
 
+    <!-- ปุ่มลิงก์ตรวจสอบสถานะพัสดุ ย้ายมาไว้ด้านล่างสุดของฟอร์ม -->
+    <a href="https://script.google.com/macros/s/AKfycbwe6cU-d4KC0n9Um3Gh834WXJc6pT15HUJCljmNyYuxA3crgUmBt6toyjZWRdLtFqVj-g/exec" target="_blank" class="tracking-btn">
+        📦 คลิกที่นี่เพื่อตรวจสอบสถานะพัสดุ
+    </a>
+
     <div id="summary">
         <h3>สั่งซื้อสำเร็จ! สรุปรายการของคุณ</h3>
         <p><strong>รหัสคำสั่งซื้อ:</strong> <span id="sum-id"></span></p>
@@ -80,9 +79,8 @@
         <p><strong>หมายเหตุ:</strong> <span id="sum-note"></span></p>
         <p style="color: #28a745;">สถานะ: บันทึกคำสั่งซื้อเรียบร้อย</p>
         
-        <!-- ปุ่มเช็คพัสดุโผล่มาให้ลูกค้ากดหลังสั่งซื้อเสร็จด้วย -->
         <a href="https://script.google.com/macros/s/AKfycbwe6cU-d4KC0n9Um3Gh834WXJc6pT15HUJCljmNyYuxA3crgUmBt6toyjZWRdLtFqVj-g/exec" target="_blank" class="tracking-btn" style="background: #17a2b8; margin-top: 15px;">
-            🔍 เช็คสถานะพัสดุของคุณที่นี่
+            🔍 เช็คเลขพัสดุของคุณที่นี่
         </a>
     </div>
 </div>
@@ -122,7 +120,7 @@ function submitOrder(event) {
             slipData: base64Data || ""
         };
 
-        // ⚠️ อย่าลืมแทนที่ URL นี้ด้วย Web App URL ของ Google Sheets ฝั่งรับข้อมูลคำสั่งซื้ออันเดิมของคุณ
+        // ⚠️ แทนที่ URL นี้ด้วย Web App URL ของ Google Sheets ฝั่งรับข้อมูลคำสั่งซื้อของคุณ
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzqhePVSq8Tgmv4lUA5_2g_JqQgAPAmBqO7UjpiAts/dev";
 
         fetch(WEB_APP_URL, {
