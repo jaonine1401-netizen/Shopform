@@ -25,7 +25,7 @@
     <form id="orderForm" onsubmit="submitOrder(event)">
         <div class="form-group">
             <label>1. รายการสินค้า (พิมพ์ชื่อสินค้าและรายละเอียด)</label>
-            <input type="text" id="product" placeholder="เช่น Usb C-L 1ชิ้น" required>
+            <input type="text" id="product" placeholder="เช่น เสื้อยืดสีดำ ไซส์ L จำนวน 2 ตัว" required>
         </div>
         <div class="form-group">
             <label>จำนวนยอดเงินที่โอน (บาท)</label>
@@ -62,6 +62,11 @@
         <button type="submit" id="submitBtn">ยืนยันการสั่งซื้อ</button>
     </form>
 
+    <!-- ปุ่มลิงก์ตรวจสอบสถานะพัสดุ (แสดงเฉพาะตอนอยู่หน้ากรอกฟอร์ม) -->
+    <a href="https://script.google.com/macros/s/AKfycbwe6cU-d4KC0n9Um3Gh834WXJc6pT15HUJCljmNyYuxA3crgUmBt6toyjZWRdLtFqVj-g/exec" target="_blank" class="tracking-btn" id="trackingLinkBtn">
+        📦 คลิกที่นี่เพื่อตรวจสอบสถานะพัสดุ
+    </a>
+
     <div id="summary">
         <h3>สั่งซื้อสำเร็จ! สรุปรายการของคุณ</h3>
         <p><strong>รหัสคำสั่งซื้อ:</strong> <span id="sum-id"></span></p>
@@ -74,8 +79,8 @@
         <p><strong>หมายเหตุ:</strong> <span id="sum-note"></span></p>
         <p style="color: #28a745;">สถานะ: บันทึกคำสั่งซื้อเรียบร้อย</p>
         
-        <!-- ปุ่มเช็คพัสดุจะแสดงเฉพาะตอนสั่งซื้อสำเร็จแล้วเท่านั้น -->
-        <a href="https://script.google.com/macros/s/AKfycbwe6cU-d4KC0n9Um3Gh834WXJc6pT15HUJCljmNyYuxA3crgUmBt6toyjZWRdLtFqVj-g/exec" target="_blank" class="tracking-btn" style="background: #17a2b8;">
+        <!-- ปุ่มเช็คพัสดุในหน้าสำเร็จ -->
+        <a href="https://script.google.com/macros/s/AKfycbwe6cU-d4KC0n9Um3Gh834WXJc6pT15HUJCljmNyYuxA3crgUmBt6toyjZWRdLtFqVj-g/exec" target="_blank" class="tracking-btn" style="background: #17a2b8; margin-top: 15px;">
             🔍 เช็คเลขพัสดุของคุณที่นี่
         </a>
     </div>
@@ -117,7 +122,7 @@ function submitOrder(event) {
         };
 
         // ⚠️ แทนที่ URL นี้ด้วย Web App URL ของ Google Sheets ฝั่งรับข้อมูลคำสั่งซื้อของคุณ
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxG7DZ8uj8ya0JJv3wSdBvoEDRDf1LdTgATH7ZzUwItIRPrbIobzgPn0-vHjqWq8Uvq/exec";
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycby8phjaPjV1mb041jj7XZfeSJzBLdTUSXTKXbJOScHoLKu3AOfb6tAcJ2nHwyKk_Qvf/exec";
 
         fetch(WEB_APP_URL, {
             method: "POST",
@@ -133,7 +138,10 @@ function submitOrder(event) {
             document.getElementById('sum-address').innerText = address;
             document.getElementById('sum-note').innerText = note ? note : "-";
 
+            // ซ่อนฟอร์มและซ่อนปุ่มเช็คพัสดุตัวบน
             document.getElementById('orderForm').style.display = 'none';
+            document.getElementById('trackingLinkBtn').style.display = 'none';
+            // แสดงหน้าสำเร็จ
             document.getElementById('summary').style.display = 'block';
         }).catch(error => {
             alert('เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง');
