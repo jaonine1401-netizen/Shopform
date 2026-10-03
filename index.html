@@ -10,8 +10,10 @@
         .form-group { margin-bottom: 15px; }
         label { display: block; margin-bottom: 5px; font-weight: bold; color: #555; }
         input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        button { background: #28a745; color: white; padding: 12px; border: none; width: 100%; border-radius: 4px; font-size: 16px; cursor: pointer; }
+        button { background: #28a745; color: white; padding: 12px; border: none; width: 100%; border-radius: 4px; font-size: 16px; cursor: pointer; margin-bottom: 10px; }
         button:hover { background: #218838; }
+        .tracking-btn { display: block; background: #007bff; color: white; text-align: center; padding: 12px; border-radius: 4px; text-decoration: none; font-size: 16px; margin-bottom: 10px; }
+        .tracking-btn:hover { background: #0056b3; }
         #summary { display: none; background: #e9ecef; padding: 20px; border-radius: 4px; margin-top: 20px; }
     </style>
 </head>
@@ -19,10 +21,17 @@
 
 <div class="container">
     <h2>แบบฟอร์มสั่งซื้อสินค้า</h2>
+
+    <!-- ปุ่มลิงก์สำหรับให้ลูกค้ากดเช็คพัสดุได้ตลอดเวลาจากหน้าบ้าน -->
+    <a href="https://script.google.com/macros/s/AKfycbwe6cU-d4KC0n9Um3Gh834WXJc6pT15HUJCljmNyYuxA3crgUmBt6toyjZWRdLtFqVj-g/exec" target="_blank" class="tracking-btn">
+        📦 คลิกที่นี่เพื่อตรวจสอบสถานะพัสดุ
+    </a>
+    <hr style="border: 0; border-top: 1px solid #ddd; margin: 20px 0;">
+
     <form id="orderForm" onsubmit="submitOrder(event)">
         <div class="form-group">
             <label>1. รายการสินค้า (พิมพ์ชื่อสินค้าและรายละเอียด)</label>
-            <input type="text" id="product" placeholder="เช่น สายชาร์จ Usb C - L 1ชิ้น" required>
+            <input type="text" id="product" placeholder="เช่น เสื้อยืดสีดำ ไซส์ L จำนวน 2 ตัว" required>
         </div>
         <div class="form-group">
             <label>จำนวนยอดเงินที่โอน (บาท)</label>
@@ -52,6 +61,10 @@
             <label>อัพโหลดสลิปโอนเงิน (ถ้ามี)</label>
             <input type="file" id="slip" accept="image/*">
         </div>
+        <div class="form-group">
+            <label>หมายเหตุถึงร้านค้า (ถ้ามี)</label>
+            <textarea id="note" rows="2" placeholder="เช่น ฝากไว้ที่นิติบุคคล, ส่งของรอบบ่าย"></textarea>
+        </div>
         <button type="submit" id="submitBtn">ยืนยันการสั่งซื้อ</button>
     </form>
 
@@ -64,7 +77,13 @@
         <p><strong>สินค้า:</strong> <span id="sum-product"></span></p>
         <p><strong>ยอดเงิน:</strong> <span id="sum-amount"></span> บาท</p>
         <p><strong>การจัดส่ง:</strong> <span id="sum-shipping"></span></p>
+        <p><strong>หมายเหตุ:</strong> <span id="sum-note"></span></p>
         <p style="color: #28a745;">สถานะ: บันทึกคำสั่งซื้อเรียบร้อย</p>
+        
+        <!-- ปุ่มเช็คพัสดุโผล่มาให้ลูกค้ากดหลังสั่งซื้อเสร็จด้วย -->
+        <a href="https://script.google.com/macros/s/AKfycbwe6cU-d4KC0n9Um3Gh834WXJc6pT15HUJCljmNyYuxA3crgUmBt6toyjZWRdLtFqVj-g/exec" target="_blank" class="tracking-btn" style="background: #17a2b8; margin-top: 15px;">
+            🔍 เช็คสถานะพัสดุของคุณที่นี่
+        </a>
     </div>
 </div>
 
@@ -83,11 +102,11 @@ function submitOrder(event) {
     let name = document.getElementById('name').value;
     let phone = document.getElementById('phone').value;
     let address = document.getElementById('address').value;
+    let note = document.getElementById('note').value;
     let fileInput = document.getElementById('slip');
 
     let file = fileInput.files[0];
 
-    // ฟังก์ชันย่อยสำหรับส่งข้อมูลไป Google Sheets
     function sendDataToSheet(base64Data, slipName, slipType) {
         let payload = {
             orderId: orderId,
@@ -97,12 +116,13 @@ function submitOrder(event) {
             name: name,
             phone: phone,
             address: address,
+            note: note,
             slipName: slipName || "",
             slipType: slipType || "",
             slipData: base64Data || ""
         };
 
-        // ⚠️ แทนที่ URL ด้านล่างนี้ด้วย Web App URL ของคุณ
+        // ⚠️ อย่าลืมแทนที่ URL นี้ด้วย Web App URL ของ Google Sheets ฝั่งรับข้อมูลคำสั่งซื้ออันเดิมของคุณ
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzqhePVSq8Tgmv4lUA5_2g_JqQgAPAmBqO7UjpiAts/dev";
 
         fetch(WEB_APP_URL, {
@@ -117,6 +137,7 @@ function submitOrder(event) {
             document.getElementById('sum-name').innerText = name;
             document.getElementById('sum-phone').innerText = phone;
             document.getElementById('sum-address').innerText = address;
+            document.getElementById('sum-note').innerText = note ? note : "-";
 
             document.getElementById('orderForm').style.display = 'none';
             document.getElementById('summary').style.display = 'block';
@@ -127,7 +148,6 @@ function submitOrder(event) {
         });
     }
 
-    // ถ้ารูปแบบเลือกเป็นเก็บเงินปลายทาง หรือไม่ได้แนบสลิปมา ให้ส่งข้อมูลได้เลยทันที
     if (file) {
         let reader = new FileReader();
         reader.onload = function(e) {
