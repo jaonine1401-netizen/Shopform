@@ -25,7 +25,7 @@
     <form id="orderForm" onsubmit="submitOrder(event)">
         <div class="form-group">
             <label>1. รายการสินค้า (พิมพ์ชื่อสินค้าและรายละเอียด)</label>
-            <input type="text" id="product" placeholder="เช่น สายชาร์จ Usb C-L 1ชิ้น" required>
+            <input type="text" id="product" placeholder="เช่น เสื้อยืดสีดำ ไซส์ L จำนวน 2 ตัว" required>
         </div>
         <div class="form-group">
             <label>จำนวนยอดเงินที่โอน (บาท)</label>
@@ -63,8 +63,8 @@
     </form>
 
     <!-- ปุ่มลิงก์ตรวจสอบสถานะพัสดุ (แสดงเฉพาะตอนอยู่หน้ากรอกฟอร์ม) -->
-    <a href="https://script.google.com/macros/s/AKfycbzjo1iymc93ll7vCixaZdzyN5s0PQWRWJSJNMMov-vl1rNHZlk-uesayxJJ7b3BbaLdMQ/exec">
-        📦 คลิกที่นี่เพื่อตรวจสอบเลขพัสดุ
+    <a href="https://script.google.com/macros/s/AKfycbwe6cU-d4KC0n9Um3Gh834WXJc6pT15HUJCljmNyYuxA3crgUmBt6toyjZWRdLtFqVj-g/exec" target="_blank" class="tracking-btn" id="trackingLinkBtn">
+        📦 คลิกที่นี่เพื่อตรวจสอบสถานะพัสดุ
     </a>
 
     <div id="summary">
@@ -122,7 +122,7 @@ function submitOrder(event) {
         };
 
         // ⚠️ แทนที่ URL นี้ด้วย Web App URL ของ Google Sheets ฝั่งรับข้อมูลคำสั่งซื้อของคุณ
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycby8phjaPjV1mb041jj7XZfeSJzBLdTUSXTKXbJOScHoLKu3AOfb6tAcJ2nHwyKk_Qvf/exec";
+        const WEB_APP_URL = "https://script.google.com/macros/s/วาง_URL_ของGoogleSheetsคุณที่นี่/exec";
 
         fetch(WEB_APP_URL, {
             method: "POST",
