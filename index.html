@@ -22,15 +22,10 @@
 <div class="container">
     <h2>แบบฟอร์มสั่งซื้อสินค้า</h2>
     
-    <!-- ปุ่มตรวจสอบสถานะพัสดุหน้าฟอร์ม -->
-    <a href="https://script.google.com/macros/s/AKfycbyvjL2eXzZLvW1KQws4Kvdwz3zvCIj9U22MhMYa5OrvuR0K7iFGMZSUGixMuOyMLGxdbA/exec" target="_blank" class="tracking-btn" style="margin-bottom: 20px; margin-top: 0;">
-        📦 คลิกที่นี่เพื่อตรวจสอบสถานะพัสดุ
-    </a>
-
     <form id="orderForm" onsubmit="submitOrder(event)">
         <div class="form-group">
             <label>1. รายการสินค้า (พิมพ์ชื่อสินค้าและรายละเอียด)</label>
-            <input type="text" id="product" placeholder="เช่น เสื้อยืดสีดำ ไซส์ L จำนวน 2 ตัว" required>
+            <input type="text" id="product" placeholder="เช่น สายชาร์จ Usb C-L 1 ชิ้น" required>
         </div>
         <div class="form-group">
             <label>จำนวนยอดเงินที่โอน (บาท)</label>
@@ -66,6 +61,11 @@
         </div>
         <button type="submit" id="submitBtn">ยืนยันการสั่งซื้อ</button>
     </form>
+
+    <!-- ปุ่มตรวจสอบสถานะพัสดุ ย้ายมาอยู่ด้านล่างสุดของฟอร์ม -->
+    <a href="https://script.google.com/macros/s/AKfycbyvjL2eXzZLvW1KQws4Kvdwz3zvCIj9U22MhMYa5OrvuR0K7iFGMZSUGixMuOyMLGxdbA/exec" target="_blank" class="tracking-btn">
+        📦 คลิกที่นี่เพื่อตรวจสอบเลขพัสดุ
+    </a>
 
     <div id="summary">
         <h3>สั่งซื้อสำเร็จ! สรุปรายการของคุณ</h3>
@@ -121,7 +121,7 @@ function submitOrder(event) {
             slipData: base64Data || ""
         };
 
-        // ⚠️️ อย่าลืมแทนที่ URL นี้ด้วย Web App URL ของ Google Sheets ฝั่งรับข้อมูลคำสั่งซื้อของคุณ
+        // ⚠️ อย่าลืมแทนที่ URL นี้ด้วย Web App URL ของ Google Sheets ฝั่งรับข้อมูลคำสั่งซื้อของคุณ
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycby8phjaPjV1mb041jj7XZfeSJzBLdTUSXTKXbJOScHoLKu3AOfb6tAcJ2nHwyKk_Qvf/exec";
 
         fetch(WEB_APP_URL, {
@@ -139,6 +139,8 @@ function submitOrder(event) {
             document.getElementById('sum-note').innerText = note ? note : "-";
 
             document.getElementById('orderForm').style.display = 'none';
+            // ซ่อนปุ่มเช็คพัสดุตืดล่างตอนกดสั่งซื้อสำเร็จ เพื่อไม่ให้ซ้ำซ้อนกับหน้าสรุปผล
+            document.querySelector('.container > .tracking-btn').style.display = 'none';
             document.getElementById('summary').style.display = 'block';
         }).catch(error => {
             alert('เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง');
