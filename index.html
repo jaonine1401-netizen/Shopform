@@ -7,6 +7,13 @@
         body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f4f7f6; margin: 0; padding: 20px; }
         .container { max-width: 600px; background: #fff; margin: auto; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         h2 { color: #333; text-align: center; }
+        
+        /* สไตล์ส่วนช่องทางชำระเงิน */
+        .payment-box { background: #fff8f8; border: 2px dashed #ffb6c1; padding: 15px; border-radius: 8px; text-align: center; margin-bottom: 20px; }
+        .payment-box img { max-width: 100%; height: auto; border-radius: 6px; margin-bottom: 10px; max-height: 350px; }
+        .payment-info { font-size: 15px; color: #333; line-height: 1.6; text-align: left; background: #fff; padding: 10px; border-radius: 6px; border: 1px solid #eee; }
+        .payment-info b { color: #d9534f; }
+
         .form-group { margin-bottom: 15px; }
         label { display: block; margin-bottom: 5px; font-weight: bold; color: #555; }
         input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
@@ -22,10 +29,24 @@
 <div class="container">
     <h2>แบบฟอร์มสั่งซื้อสินค้า</h2>
     
+    <!-- ส่วนแสดงข้อมูลช่องทางการชำระเงินและรูปภาพ -->
+    <div class="payment-box">
+        <h3>💳 ช่องทางการชำระเงิน</h3>
+        <!-- เปลี่ยนคำว่า qr.jpg ให้ตรงกับชื่อไฟล์รูปภาพของคุณบน GitHub -->
+        <img src="QR.png" alt="QR Code สแกนจ่ายเงิน">
+        
+        <div class="payment-info">
+            <p><strong>ชื่อบัญชี:</strong> กรองทอง สรวยงาม</p>
+            <p><strong>SCB (ธนาคารไทยพาณิชย์):</strong> <b>821-4-14148-4</b></p>
+            <p><strong>TrueMoney Wallet:</strong> <b>099-9671158</b></p>
+            <p style="color: #c0392b; font-size: 13px; text-align: center; margin-top: 8px;">*รบกวนโอนตามเลขบัญชีนี้เท่านั้นน้า หากทำการชำระแล้ว ขอสงวนการคืนเงินทุกกรณี*</p>
+        </div>
+    </div>
+
     <form id="orderForm" onsubmit="submitOrder(event)">
         <div class="form-group">
             <label>1. รายการสินค้า (พิมพ์ชื่อสินค้าและรายละเอียด)</label>
-            <input type="text" id="product" placeholder="เช่น สายชาร์จ Usb C-L 1 ชิ้น" required>
+            <input type="text" id="product" placeholder="เช่น สายชาร์จ Usb c-L 1ชิ้น" required>
         </div>
         <div class="form-group">
             <label>จำนวนยอดเงินที่โอน (บาท)</label>
@@ -62,7 +83,7 @@
         <button type="submit" id="submitBtn">ยืนยันการสั่งซื้อ</button>
     </form>
 
-    <!-- ปุ่มตรวจสอบสถานะพัสดุ ย้ายมาอยู่ด้านล่างสุดของฟอร์ม -->
+    <!-- ปุ่มตรวจสอบสถานะพัสดุ -->
     <a href="https://script.google.com/macros/s/AKfycbyvjL2eXzZLvW1KQws4Kvdwz3zvCIj9U22MhMYa5OrvuR0K7iFGMZSUGixMuOyMLGxdbA/exec" target="_blank" class="tracking-btn">
         📦 คลิกที่นี่เพื่อตรวจสอบเลขพัสดุ
     </a>
@@ -139,7 +160,6 @@ function submitOrder(event) {
             document.getElementById('sum-note').innerText = note ? note : "-";
 
             document.getElementById('orderForm').style.display = 'none';
-            // ซ่อนปุ่มเช็คพัสดุตืดล่างตอนกดสั่งซื้อสำเร็จ เพื่อไม่ให้ซ้ำซ้อนกับหน้าสรุปผล
             document.querySelector('.container > .tracking-btn').style.display = 'none';
             document.getElementById('summary').style.display = 'block';
         }).catch(error => {
